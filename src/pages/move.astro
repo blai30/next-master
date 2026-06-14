@@ -33,7 +33,7 @@ const movesData = moves
     damageClass: resource.damage_class.name,
     power: resource.power || undefined,
     accuracy: resource.accuracy || undefined,
-    pp: resource.pp!,
+    pp: resource.pp || undefined,
   }))
   .sort((a, b) => a.name.localeCompare(b.name))
 ---

@@ -153,9 +153,7 @@ export default function CardGrid<T extends RowData>({
             sortDirection: { key: 'dir', defaultValue: 'asc' },
           }
         : {}),
-      ...Object.fromEntries(
-        filters.map((filter) => [filter.param, { key: filter.param, defaultValue: [] }])
-      ),
+      ...Object.fromEntries(filters.map((filter) => [filter.param, { key: filter.param }])),
       currentPage: { key: 'p', defaultValue: DEFAULT_PAGE },
     },
     [globalFilter, sorting, columnFilters, pagination]

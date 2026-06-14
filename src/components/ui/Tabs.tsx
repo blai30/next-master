@@ -5,7 +5,9 @@ import type { ComponentPropsWithoutRef } from 'react'
 export const TabsRoot = BaseTabs.Root
 
 export function TabsList({ className, ...props }: ComponentPropsWithoutRef<typeof BaseTabs.List>) {
-  return <BaseTabs.List {...props} className={clsx('flex flex-row items-center gap-1', className)} />
+  return (
+    <BaseTabs.List {...props} className={clsx('flex flex-row items-center gap-1', className)} />
+  )
 }
 
 export function Tab({ className, ...props }: ComponentPropsWithoutRef<typeof BaseTabs.Tab>) {

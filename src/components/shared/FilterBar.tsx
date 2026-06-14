@@ -30,7 +30,9 @@ function optionIcon(item: ComboboxItem) {
     return <TypeIcon variant={item.value as TypeKey} size="small" className="shrink-0" />
   }
   if (damageClassKeySet.has(item.value)) {
-    return <DamageClassIcon variant={item.value as DamageClassKey} size="small" className="shrink-0" />
+    return (
+      <DamageClassIcon variant={item.value as DamageClassKey} size="small" className="shrink-0" />
+    )
   }
   return null
 }
