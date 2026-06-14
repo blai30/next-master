@@ -82,8 +82,7 @@ export function Combobox({
               )
             }
             // Text: the single label (ellipsis-truncated) or a count.
-            const text =
-              selected.length === 1 ? selected[0].label : `${selected.length} selected`
+            const text = selected.length === 1 ? selected[0].label : `${selected.length} selected`
             return <span className="min-w-0 flex-1 truncate">{text}</span>
           }}
         </BaseCombobox.Value>
