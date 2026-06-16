@@ -109,13 +109,23 @@ const [
 const imageId = species.id.toString().padStart(4, '0')
 const imageUrl = monsterSpriteUrl(species.id)
 const name = getTranslation(species.names, 'name')!
-const description = pokemon.types
+const genus = getTranslation(species.genera, 'genus')
+const typeNames = pokemon.types
   .map((t) => TYPES[t.type.name as TypeKey])
   .join('/')
+const description = `${name}${genus ? `, the ${genus}` : ''} (#${imageId}), is a ${typeNames}-type Pokémon. View its base stats, type matchups, abilities, evolutions, locations, and learnable moves.`
 const title = `${name} #${imageId}`
 ---
 
-<Layout {title} description={description} imageUrl={imageUrl}>
+<Layout
+  {title}
+  description={description}
+  imageUrl={imageUrl}
+  breadcrumbs={[
+    { name: 'Pokédex', path: import.meta.env.BASE_URL },
+    { name, path: Astro.url.pathname },
+  ]}
+>
   <Shell>
     <div class="flex w-full flex-1 flex-col gap-6">
       <div class="grow">

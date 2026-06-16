@@ -44,7 +44,10 @@ const speciesData = species.map((specie) => {
 })
 ---
 
-<Layout title="Pokemon List">
+<Layout
+  title="Pokemon List"
+  description="Browse the National Pokédex: every Pokémon with base stats, types, abilities, evolutions, and learnable moves."
+>
   <Shell>
     <div class="mx-auto max-w-384">
       <SpeciesCardGrid data={speciesData} client:load />
