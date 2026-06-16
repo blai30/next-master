@@ -16,10 +16,13 @@ import { getTypeRelations } from '@/lib/domain/effectiveness'
 import { buildEvolutionTree } from '@/lib/domain/evolution'
 import { buildLocationRows } from '@/lib/domain/locations'
 import { buildMovesData } from '@/lib/domain/moves'
-import { buildBaseStats } from '@/lib/domain/stats'
+import { buildBaseStats, STATS } from '@/lib/domain/stats'
 import { TYPES, type TypeKey } from '@/lib/domain/types'
 import { getMonstersBySpecies, getTranslation } from '@/lib/utils/pokeapi-helpers'
-import { monsterSpriteUrl } from '@/lib/utils/sprites'
+import { convertHeight, convertWeight } from '@/lib/domain/species'
+import { buildMonsterDescription, buildMonsterTitle } from '@/lib/seo/meta'
+import { buildBreadcrumbJsonLd, buildMonsterJsonLd } from '@/lib/seo/jsonld'
+import { ogImagePath } from '@/lib/seo/og'
 import { excludedForms, excludedVariants } from '@/lib/utils/excluded-slugs'
 import MonsterHero from '@/components/details/MonsterHero.astro'
 import MonsterMetadata from '@/components/details/MonsterMetadata.astro'
@@ -105,17 +108,56 @@ const [
   buildMovesData(pokemon, 'scarlet-violet'),
 ])
 
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null
+const siteUrl = Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).href : undefined
+
 // Metadata
-const imageId = species.id.toString().padStart(4, '0')
-const imageUrl = monsterSpriteUrl(species.id)
+const dexNumber = species.id.toString().padStart(4, '0')
 const name = getTranslation(species.names, 'name')!
-const description = pokemon.types
-  .map((t) => TYPES[t.type.name as TypeKey])
-  .join('/')
-const title = `${name} #${imageId}`
+const title = buildMonsterTitle(name, dexNumber)
+const description = buildMonsterDescription(species, pokemon)
+
+const pageUrl = canonicalUrl?.href ?? ''
+const ogImage =
+  Astro.site && siteUrl
+    ? new URL(`${import.meta.env.BASE_URL}${ogImagePath(species.name, variant)}`, Astro.site).href
+    : undefined
+
+const { meters } = convertHeight(pokemon.height)
+const { kilograms } = convertWeight(pokemon.weight)
+
+const monsterProperties = [
+  { name: 'National Pokedex number', value: species.id },
+  { name: 'Type', value: pokemon.types.map((type) => TYPES[type.type.name as TypeKey]).join('/') },
+  { name: 'Generation', value: species.generation.name },
+  { name: 'Color', value: species.color.name },
+  { name: 'Body shape', value: species.shape?.name ?? 'unknown' },
+  { name: 'Height', value: `${meters} m` },
+  { name: 'Weight', value: `${kilograms} kg` },
+  { name: 'Abilities', value: pokemon.abilities.map((ability) => ability.ability.name).join(', ') },
+  { name: 'Egg groups', value: eggGroups.map((group) => group.name).join(', ') },
+  { name: 'Growth rate', value: growthRate.name },
+  { name: 'Catch rate', value: species.capture_rate },
+  { name: 'Hatch counter', value: species.hatch_counter ?? 0 },
+  ...buildBaseStats(pokemon).map((stat) => ({ name: STATS[stat.key].short, value: stat.base })),
+]
+
+const jsonLd = [
+  buildBreadcrumbJsonLd([
+    ...(siteUrl ? [{ name: 'Home', url: siteUrl }] : []),
+    { name, url: pageUrl },
+  ]),
+  buildMonsterJsonLd({
+    name,
+    url: pageUrl,
+    image: ogImage ?? '',
+    description,
+    properties: monsterProperties,
+  }),
+]
 ---
 
-<Layout {title} description={description} imageUrl={imageUrl}>
+<Layout {title} description={description} imageUrl={ogImage} jsonLd={jsonLd}>
   <Shell>
     <div class="flex w-full flex-1 flex-col gap-6">
       <div class="grow">

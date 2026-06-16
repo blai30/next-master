@@ -38,7 +38,10 @@ const movesData = moves
   .sort((a, b) => a.name.localeCompare(b.name))
 ---
 
-<Layout title="Move List">
+<Layout
+  title="Moves | Masterball"
+  description="Browse every Pokemon move with type, damage class, power, accuracy, PP, and effect descriptions."
+>
   <Shell>
     <div class="mx-auto w-full max-w-384">
       <MoveCardGrid data={movesData} filterByVersionGroup={true} client:load />

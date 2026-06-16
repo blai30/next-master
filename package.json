@@ -15,8 +15,10 @@
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/react": "6.0.0-alpha.0",
+    "@astrojs/sitemap": "^3.7.3",
     "@base-ui/react": "^1.5.0",
     "@lucide/astro": "^1.17.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@tanstack/react-store": "^0.11.0",
     "@tanstack/react-table": "9.0.0-beta.11",
     "@visx/group": "^3.12.0",
@@ -30,6 +32,8 @@
     "pokedex-promise-v2": "^4.2.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "satori": "^0.26.0",
+    "sharp": "^0.35.1",
     "use-debounce": "^10.1.1"
   },
   "devDependencies": {

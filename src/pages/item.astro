@@ -50,7 +50,10 @@ const itemsData = items
   .sort((a, b) => a.name.localeCompare(b.name))
 ---
 
-<Layout title="Item List">
+<Layout
+  title="Items | Masterball"
+  description="Browse every Pokemon item with categories, effects, and descriptions."
+>
   <Shell>
     <div class="mx-auto w-full max-w-384">
       <ItemCardGrid data={itemsData} client:load />

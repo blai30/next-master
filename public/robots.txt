@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://blai30.github.io/masterball/sitemap-index.xml
