@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url'
+
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -26,7 +28,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
-        '@': new URL('.', import.meta.url).pathname,
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
   },
